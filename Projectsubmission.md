@@ -206,7 +206,7 @@ ubuntu@ip-172-31-81-125:~$ sudo hostnamectl set-hostname node2.example.com
 ![image](https://user-images.githubusercontent.com/72522796/175657848-3b406a2a-5cfd-4fdf-934b-eaf45c29135b.png)
 ![image](https://user-images.githubusercontent.com/72522796/175657875-e96249fd-2e75-44f8-9d02-2a64271ab914.png)
 
-6.	
+6.	Create node.sh to run on Node1 and Node2
 
 ## Section D: Implementation of Network Policies
 1.	TBD
