@@ -234,6 +234,28 @@ master.example.com   NotReady   control-plane,master   3h27m   v1.23.2
 node1.example.com    NotReady   <none>                 4m15s   v1.23.6
 node2.example.com    NotReady   <none>                 85s     v1.23.6
 ``` 
+11. Create an overlay network for cluster communications
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+serviceaccount/weave-net created
+clusterrole.rbac.authorization.k8s.io/weave-net created
+clusterrolebinding.rbac.authorization.k8s.io/weave-net created
+role.rbac.authorization.k8s.io/weave-net created
+rolebinding.rbac.authorization.k8s.io/weave-net created
+daemonset.apps/weave-net created
+```
+![image](https://user-images.githubusercontent.com/72522796/175697154-47cdaf44-c56a-4d06-aea1-f6f22a430aeb.png)
+
+11. Create a multi-tier application
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ vi mydb.yml
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f mydb.yml
+deployment.apps/mydb created
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl expose deployment mydb --port=3306
+service/mydb exposed
+```
+![image](https://user-images.githubusercontent.com/72522796/175697427-960932da-8831-4bac-b306-be8d9210218b.png)
+
 ## Section D: Implementation of Network Policies
 1.	TB
 
