@@ -338,7 +338,33 @@ Snapshot saved at test1.db
 ![image](https://user-images.githubusercontent.com/72522796/175713494-4791a8a9-28d2-4bf4-8ecb-a4c5c7f31409.png)
 
 ## Section H: Configuration of CPU Memory Environment Scaling
-1.	TBD
+1.	Ensure prerequisties for horizontal pod autoscaler (HPA) are applied
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+serviceaccount/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+service/metrics-server created
+deployment.apps/metrics-server created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$  kubectl get pods -n kube-system
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ wget -c https://gist.githubusercontent.com/initcron/1a2bd25353e1faa22a0ad41ad1c01b62/raw/008e23f9fbf4d7e2cf79df1dd008de2f1db62a10/k8s-metrics-server.patch.yaml
+2022-06-24 22:32:07 (12.0 MB/s) - ‘k8s-metrics-server.patch.yaml’ saved [205/205]
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl patch deploy metrics-server -p "$(cat k8s-metrics-server.patch.yaml)" -n kube-system
+deployment.apps/metrics-server patched
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get pods -n kube-system
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl top pods
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl top nodes
+```
+2.	Apply horizontal pod autoscaler (HPA)
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f hpa.yml
+horizontalpodautoscaler.autoscaling/php-apache created
+```
+![image](https://user-images.githubusercontent.com/72522796/175719484-7adc2c51-7cb0-4530-9d7f-a90622be5eff.png)
 
 ## Section I:  Conclusion
 1.	TBD
