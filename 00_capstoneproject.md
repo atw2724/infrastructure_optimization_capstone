@@ -1,6 +1,5 @@
 # DevOps Capstone Infrastructure Optimization Submission
 
-
 ## Section A: Creation of the Cluster
 1.	Log onto AWS practice lab to retrieve Access Key, Secret Key, and Security Token
 2.	Open AWS Web Console and Create a Directory
@@ -366,5 +365,10 @@ horizontalpodautoscaler.autoscaling/php-apache created
 ```
 ![image](https://user-images.githubusercontent.com/72522796/175719484-7adc2c51-7cb0-4530-9d7f-a90622be5eff.png)
 
-## Section I:  Conclusion
-1.	TBD
+3.	Check loadbalancer in AWS console
+![image](https://user-images.githubusercontent.com/72522796/175720686-6293e44f-22d7-4fe6-af36-f98692ebf1f1.png)
+![image](https://user-images.githubusercontent.com/72522796/175721126-fd1cda5e-7bb7-4d4a-a14c-88ced437eeb4.png)
+
+## Section I: Conclusion
+
+This solution would alleviate the issue Easypay is experiencing regarding timeout that occurs with the connectivity of the database. It is achieved through implementation of a cluster (EC2 instances with a load balancer and elastic IPs), implementing network policies, establishing user RBAC, and applying a horizontal pod autoscaler so if the memory of CPU goes beyond 50%, environments automatically get scaled up and configured. This allows the EasyPay application to utilize node availability, and provide scaling through the kubernetes cluster that was provisioned. The architechture can be backed up through etcd snapshots in the event that a restore needs to take place. Overall, this solution makes the EasyPay app more reliable, fast, and secure for improving the performance of the current system, ensuring that the customer's expectations are met throughout their online shopping experience. 
