@@ -198,6 +198,16 @@ master.example.com   NotReady   <none>   63m   v1.23.2
 ```
 ![image](https://user-images.githubusercontent.com/72522796/175650805-65561b9a-612a-4cd9-9e58-9243b61b96a6.png)
 
+5.	Change hostnames of both the instances
+```
+ubuntu@ip-172-31-84-62:~$ sudo hostnamectl set-hostname node1.example.com
+ubuntu@ip-172-31-81-125:~$ sudo hostnamectl set-hostname node2.example.com
+```
+![image](https://user-images.githubusercontent.com/72522796/175657848-3b406a2a-5cfd-4fdf-934b-eaf45c29135b.png)
+![image](https://user-images.githubusercontent.com/72522796/175657875-e96249fd-2e75-44f8-9d02-2a64271ab914.png)
+
+6.	
+
 ## Section D: Implementation of Network Policies
 1.	TBD
 
