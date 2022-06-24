@@ -256,8 +256,30 @@ service/mydb exposed
 ```
 ![image](https://user-images.githubusercontent.com/72522796/175697427-960932da-8831-4bac-b306-be8d9210218b.png)
 
+11. Create deployment apps and run commands to expose deployment
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ vi wp.yml
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f wp.yml
+deployment.apps/wp created
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl expose deployment wp --port=80 --type=NodePort
+service/wp exposed
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get pods
+NAME                    READY   STATUS              RESTARTS   AGE
+mydb-659c7949cd-zl6gr   0/1     ContainerCreating   0          6m16s
+wp-946c66d98-hrkxx      0/1     ContainerCreating   0          52s
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get svc
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        3h50m
+mydb         ClusterIP   10.97.231.121   <none>        3306/TCP       6m9s
+wp           NodePort    10.99.52.76     <none>        80:32448/TCP   18s
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes -o wide
+NAME                 STATUS   ROLES    AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION    CONTAINER-RUNTIME
+master.example.com   Ready    <none>   3h51m   v1.23.2   172.31.19.140   <none>        Ubuntu 20.04.3 LTS   5.11.0-1027-aws   docker://20.10.17
+```
+![image](https://user-images.githubusercontent.com/72522796/175697977-2f24d219-2135-440a-becf-2f62e6585bab.png)
+
 ## Section D: Implementation of Network Policies
-1.	TB
+1.	Create network policy
 
 ## Section E: Creation of New User Permissions
 1.	TBD
