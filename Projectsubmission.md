@@ -264,9 +264,9 @@ deployment.apps/wp created
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl expose deployment wp --port=80 --type=NodePort
 service/wp exposed
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get pods
-NAME                    READY   STATUS              RESTARTS   AGE
-mydb-659c7949cd-zl6gr   0/1     ContainerCreating   0          6m16s
-wp-946c66d98-hrkxx      0/1     ContainerCreating   0          52s
+NAME                    READY   STATUS   RESTARTS   AGE
+mydb-659c7949cd-zl6gr   1/1     Running   0          6m16s
+wp-946c66d98-hrkxx      1/1     Running   0          52s
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get svc
 NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
 kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        3h50m
@@ -276,19 +276,66 @@ austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get
 NAME                 STATUS   ROLES    AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION    CONTAINER-RUNTIME
 master.example.com   Ready    <none>   3h51m   v1.23.2   172.31.19.140   <none>        Ubuntu 20.04.3 LTS   5.11.0-1027-aws   docker://20.10.17
 ```
-![image](https://user-images.githubusercontent.com/72522796/175697977-2f24d219-2135-440a-becf-2f62e6585bab.png)
 
 ## Section D: Implementation of Network Policies
 1.	Create network policy
+```austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ vi np.yml
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f np.yml
+networkpolicy.networking.k8s.io/api-allow created
+```
+![image](https://user-images.githubusercontent.com/72522796/175698355-843d869e-ead5-4696-ac29-38719f4826a2.png)
 
 ## Section E: Creation of New User Permissions
-1.	TBD
+1.	Create Users and ACL RBAC
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create serviceaccount newroleadded
+serviceaccount/newroleadded created
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create clusterrole newroleadded --verb=get --verb=list --verb=create --verb=update --resource=pods
+clusterrole.rbac.authorization.k8s.io/newroleadded created
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create clusterrolebinding newroleadded --serviceaccount=default:newroleadded --clusterrole=newroleadded
+clusterrolebinding.rbac.authorization.k8s.io/newroleadded created
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ TOKEN=$(kubectl describe secrets "$(kubectl describe serviceaccount newroleadded | grep -i Tokens | awk '{print $2}')" | grep token: | awk '{print $2}')
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl config set-credentials myuser1 --token=$TOKEN
+User "myuser1" set.
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl config set-context newcontextadded --cluster=kubernetes --user=myuser1
+Context "newcontextadded" created.
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl config use-context newcontextadded
+Switched to context "newcontextadded".
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get all
+```
+![image](https://user-images.githubusercontent.com/72522796/175698794-ce09c481-2c19-4eeb-9ebe-83bb70acff4c.png)
 
 ## Section F: Application Configuration on the Pod
-1.	TBD
+1.	Configure applications on the Pod
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl auth can-i get pods --all-namespaces
+yes
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ 
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl auth can-i get pods --all-namespaces
+yes
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl auth can-i get deployment --all-namespaces
+no
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl config use-context kubernetes-admin@kubernetes
+Switched to context "kubernetes-admin@kubernetes".
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl auth can-i get deployment --all-namespaces
+yes
+```
+![image](https://user-images.githubusercontent.com/72522796/175699009-aefc2c3c-9400-45c1-9764-4f15cb20ca4b.png)
 
 ## Section G: ETCD Database Snapshot
-1.	TBD
+1.	Take a snapshot/backup of the etcd database
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo apt update -y
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo apt install etcd-client
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ hostname -i
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes -o wide
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ export advertise_url=172.31.19.140:2379
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ echo $advertise_url
+https://172.31.19.140:2379
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo ETCDCTL_API=3 etcdctl --endpoints $advertise_url --cacert /etc/kubernetes/pki/etcd/ca.crt --key /etc/kubernetes/pki/etcd/server.key --cert /etc/kubernetes/pki/etcd/server.crt snapshot save test1.db
+Snapshot saved at test1.db
+```
+![image](https://user-images.githubusercontent.com/72522796/175713494-4791a8a9-28d2-4bf4-8ecb-a4c5c7f31409.png)
 
 ## Section H: Configuration of CPU Memory Environment Scaling
 1.	TBD
