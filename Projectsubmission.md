@@ -235,7 +235,7 @@ node1.example.com    NotReady   <none>                 4m15s   v1.23.6
 node2.example.com    NotReady   <none>                 85s     v1.23.6
 ``` 
 ## Section D: Implementation of Network Policies
-1.	TBD
+1.	TB
 
 ## Section E: Creation of New User Permissions
 1.	TBD
