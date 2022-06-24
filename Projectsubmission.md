@@ -198,16 +198,42 @@ master.example.com   NotReady   <none>   63m   v1.23.2
 ```
 ![image](https://user-images.githubusercontent.com/72522796/175650805-65561b9a-612a-4cd9-9e58-9243b61b96a6.png)
 
-5.	Change hostnames of both the instances
+6.	Generate the token join command
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo kubeadm token create --print-join-command
+kubeadm join 172.31.19.140:6443 --token hois6m.yxj0xrtzfkz3vy18 --discovery-token-ca-cert-hash sha256:4b2eed87c88da2ca083b060293152987530d93259887dc7ead3c020ccbf6b648 
+```
+![image](https://user-images.githubusercontent.com/72522796/175680614-6062afed-683a-4acb-9588-71a5418244e9.png)
+
+7.	Change hostnames of both the instances
 ```
 ubuntu@ip-172-31-84-62:~$ sudo hostnamectl set-hostname node1.example.com
 ubuntu@ip-172-31-81-125:~$ sudo hostnamectl set-hostname node2.example.com
 ```
 ![image](https://user-images.githubusercontent.com/72522796/175657848-3b406a2a-5cfd-4fdf-934b-eaf45c29135b.png)
 ![image](https://user-images.githubusercontent.com/72522796/175657875-e96249fd-2e75-44f8-9d02-2a64271ab914.png)
+![image](https://user-images.githubusercontent.com/72522796/175667579-f001e261-c905-44f2-96f9-325049c18acd.png)
 
-6.	Create node.sh to run on Node1 and Node2
+8. Create and run the node.sh on Node1 and Node2
 
+![image](https://user-images.githubusercontent.com/72522796/175664956-1ed4b727-72be-467b-a283-934768e98500.png)
+
+9.	Access the AWS console and allows TCP traffic within the subnet
+
+![image](https://user-images.githubusercontent.com/72522796/175664819-a8cc1f6d-9f01-4503-8b46-0a18f91f896d.png)
+
+10.	On each node, run this command to join both Node1 and Node 2 to the Master
+```
+sudo kubeadm join 172.31.19.140:6443 --token hois6m.yxj0xrtzfkz3vy18 --discovery-token-ca-cert-hash sha256:4b2eed87c88da2ca083b060293152987530d93259887dc7ead3c020ccbf6b648
+```
+11. Verify Kubernetes Installation on the master
+```
+austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes
+NAME                 STATUS     ROLES                  AGE     VERSION
+master.example.com   NotReady   control-plane,master   3h27m   v1.23.2
+node1.example.com    NotReady   <none>                 4m15s   v1.23.6
+node2.example.com    NotReady   <none>                 85s     v1.23.6
+``` 
 ## Section D: Implementation of Network Policies
 1.	TBD
 
