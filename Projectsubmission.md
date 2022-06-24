@@ -158,5 +158,60 @@ austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ t
 ![image](https://user-images.githubusercontent.com/72522796/175647097-6a1ee61e-e783-45cb-b48c-4828ab1e1ffa.png)
 
 ## Section C: Kubernetes Installation on the Master
+1.	Create install.sh
+```
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ vi install.sh
+```
+![image](https://user-images.githubusercontent.com/72522796/175649953-a9fe376d-77f2-419b-99e7-c838a594da2b.png)
 
+2.	Execute docker install script
+```
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sh install.sh
+```
+![image](https://user-images.githubusercontent.com/72522796/175651227-7e8b101d-8d9b-4045-948f-3ceaffc65f62.png)
 
+3.	Run commands to enable docker, reload daemon, and restart docker
+```
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo systemctl enable docker
+Synchronizing state of docker.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable docker
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo systemctl daemon-reload
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ 
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo systemctl restart docker
+```
+![image](https://user-images.githubusercontent.com/72522796/175650284-9d020417-1c0a-4d35-9f27-62ad190e2176.png)
+
+4.	Initialize Kubernetes, make home directory, copy configs, and edit ownership
+```
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo kubeadm init
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ mkdir -p $HOME/.kube
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+![image](https://user-images.githubusercontent.com/72522796/175650542-8d327598-ec0b-4b61-b711-c73b2ce33b13.png)
+
+5.	Verify Master Node was installed
+```
+austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes
+NAME                 STATUS     ROLES    AGE   VERSION
+master.example.com   NotReady   <none>   63m   v1.23.2
+```
+![image](https://user-images.githubusercontent.com/72522796/175650805-65561b9a-612a-4cd9-9e58-9243b61b96a6.png)
+
+## Section D: Implementation of Network Policies
+1.	TBD
+
+## Section E: Creation of New User Permissions
+1.	TBD
+
+## Section F: Application Configuration on the Pod
+1.	TBD
+
+## Section G: ETCD Database Snapshot
+1.	TBD
+
+## Section H: Configuration of CPU Memory Environment Scaling
+1.	TBD
+
+## Section I:  Conclusion
+1.	TBD
