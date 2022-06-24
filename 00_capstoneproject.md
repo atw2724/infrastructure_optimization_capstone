@@ -36,7 +36,6 @@ is 1.2.3. You can update by downloading from https://www.terraform.io/downloads.
 ![image](https://user-images.githubusercontent.com/72522796/175634712-6b921233-2f82-43b2-965d-af8d5f44e3ce.png)
 
 2.	Initialize Terraform
-
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ terraform init
 
@@ -65,7 +64,6 @@ commands will detect it and remind you to do so if necessary.
 ![image](https://user-images.githubusercontent.com/72522796/175635064-e5c7694e-e8c4-452e-92ee-2954da1a4837.png)
 
 3.	Create main.tf to define aws instance and keypair resources 
-
 ```
 cat main.tf
 
@@ -96,20 +94,19 @@ provisioner "local-exec" { # Create "myKey.pem" to your computer!!
   }
 }
 ```
-![image](https://user-images.githubusercontent.com/72522796/175636886-0568ef95-6524-4aa9-b67f-6d2134fe5ca9.png)
 
 4.	Run Terraform Plan
-
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ terraform plan
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175643556-26553f65-e84e-4aa4-afae-cbb1ac5eb016.png)
 
 5.	Run Terraform Apply to deploy EC2 Instance
-
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ terraform apply
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175644072-e3b4da0d-21e6-4064-9c93-270b629f9750.png)
 
 6.	Verify Instance and Keypair Creation
@@ -121,15 +118,14 @@ austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ t
 ![image](https://user-images.githubusercontent.com/72522796/175644480-b5891ef8-8c08-4e56-88f5-fbb2e992eeaf.png)
 
 8.	Run Terraform Apply and change permissions to verify ability to SSH
-
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$  chmod 400 myKey.pem
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$  ssh -i myKey.pem ec2-user@44.206.230.44
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175644684-62d28b21-f746-4f84-9f34-dfba54994604.png)
 
 9.	Scale the instances by modifying main.tf with updated count, updated name, and updated value
-
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ vi main.tf
 resource "aws_instance" "ubuntu" {
@@ -150,23 +146,26 @@ output "myEC2IP" {
 ```
 
 10.	Run Terraform Apply again to provision the additional instances
-
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ terraform apply
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175647097-6a1ee61e-e783-45cb-b48c-4828ab1e1ffa.png)
 
 ## Section C: Kubernetes Installation on the Master
+
 1.	Create install.sh
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ vi install.sh
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175649953-a9fe376d-77f2-419b-99e7-c838a594da2b.png)
 
 2.	Execute docker install script
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sh install.sh
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175651227-7e8b101d-8d9b-4045-948f-3ceaffc65f62.png)
 
 3.	Run commands to enable docker, reload daemon, and restart docker
@@ -178,6 +177,7 @@ austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ s
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ 
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo systemctl restart docker
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175650284-9d020417-1c0a-4d35-9f27-62ad190e2176.png)
 
 4.	Initialize Kubernetes, make home directory, copy configs, and edit ownership
@@ -187,6 +187,7 @@ austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ m
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175650542-8d327598-ec0b-4b61-b711-c73b2ce33b13.png)
 
 5.	Verify Master Node was installed
@@ -195,13 +196,15 @@ austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ k
 NAME                 STATUS     ROLES    AGE   VERSION
 master.example.com   NotReady   <none>   63m   v1.23.2
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175650805-65561b9a-612a-4cd9-9e58-9243b61b96a6.png)
 
-6.	Generate the token join command
+6.	Generate the kubernets token to join nodes
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo kubeadm token create --print-join-command
 kubeadm join 172.31.19.140:6443 --token hois6m.yxj0xrtzfkz3vy18 --discovery-token-ca-cert-hash sha256:4b2eed87c88da2ca083b060293152987530d93259887dc7ead3c020ccbf6b648 
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175680614-6062afed-683a-4acb-9588-71a5418244e9.png)
 
 7.	Change hostnames of both the instances
@@ -209,8 +212,11 @@ kubeadm join 172.31.19.140:6443 --token hois6m.yxj0xrtzfkz3vy18 --discovery-toke
 ubuntu@ip-172-31-84-62:~$ sudo hostnamectl set-hostname node1.example.com
 ubuntu@ip-172-31-81-125:~$ sudo hostnamectl set-hostname node2.example.com
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175657848-3b406a2a-5cfd-4fdf-934b-eaf45c29135b.png)
+
 ![image](https://user-images.githubusercontent.com/72522796/175657875-e96249fd-2e75-44f8-9d02-2a64271ab914.png)
+
 ![image](https://user-images.githubusercontent.com/72522796/175667579-f001e261-c905-44f2-96f9-325049c18acd.png)
 
 8. Create and run the node.sh on Node1 and Node2
@@ -221,19 +227,21 @@ ubuntu@ip-172-31-81-125:~$ sudo hostnamectl set-hostname node2.example.com
 
 ![image](https://user-images.githubusercontent.com/72522796/175664819-a8cc1f6d-9f01-4503-8b46-0a18f91f896d.png)
 
-10.	On each node, run this command to join both Node1 and Node 2 to the Master
+10.	On each node, run kubeadm join to connect both Node1 and Node 2 to the Master
 ```
 sudo kubeadm join 172.31.19.140:6443 --token hois6m.yxj0xrtzfkz3vy18 --discovery-token-ca-cert-hash sha256:4b2eed87c88da2ca083b060293152987530d93259887dc7ead3c020ccbf6b648
 ```
+
 11. Verify Kubernetes Installation on the master
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes
 NAME                 STATUS     ROLES                  AGE     VERSION
 master.example.com   NotReady   control-plane,master   3h27m   v1.23.2
 node1.example.com    NotReady   <none>                 4m15s   v1.23.6
-node2.example.com    NotReady   <none>                 85s     v1.23.6
+node2.example.com    NotReady   <none>                 1m25s   v1.23.6
 ``` 
-11. Create an overlay network for cluster communications
+
+12. Create an overlay network for cluster communications
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 serviceaccount/weave-net created
@@ -243,9 +251,10 @@ role.rbac.authorization.k8s.io/weave-net created
 rolebinding.rbac.authorization.k8s.io/weave-net created
 daemonset.apps/weave-net created
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175697154-47cdaf44-c56a-4d06-aea1-f6f22a430aeb.png)
 
-11. Create a multi-tier application
+13. Create and deploy a multi-tier application
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ vi mydb.yml
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f mydb.yml
@@ -253,9 +262,10 @@ deployment.apps/mydb created
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl expose deployment mydb --port=3306
 service/mydb exposed
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175697427-960932da-8831-4bac-b306-be8d9210218b.png)
 
-11. Create deployment apps and run commands to expose deployment
+14. Create deployment apps and run commands to expose deployment
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ vi wp.yml
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f wp.yml
@@ -272,8 +282,10 @@ kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP        3h50m
 mydb         ClusterIP   10.97.231.121   <none>        3306/TCP       6m9s
 wp           NodePort    10.99.52.76     <none>        80:32448/TCP   18s
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes -o wide
-NAME                 STATUS   ROLES    AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION    CONTAINER-RUNTIME
-master.example.com   Ready    <none>   3h51m   v1.23.2   172.31.19.140   <none>        Ubuntu 20.04.3 LTS   5.11.0-1027-aws   docker://20.10.17
+NAME                 STATUS   ROLES    AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE           KERNEL-VERSION    CONTAINER-RUNTIME
+master.example.com   Ready    <none>   3h51m   v1.23.2   172.31.19.140   <none>       Ubuntu 20.04 LTS    5.11.0-1027-aws   docker://20.10.17
+node1.example.com    Ready    <none>   28m15s  v1.23.6   172.31.84.62    <none>       Ubuntu 22.04 LTS    5.15.0-1011-aws   docker://20.10.17
+node2.example.com    Ready    <none>   25m25s  v1.23.6   172.31.81.125   <none>       Ubuntu 22.04 LTS    5.15.0-1011-aws   docker://20.10.17
 ```
 
 ## Section D: Implementation of Network Policies
@@ -282,10 +294,11 @@ master.example.com   Ready    <none>   3h51m   v1.23.2   172.31.19.140   <none> 
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f np.yml
 networkpolicy.networking.k8s.io/api-allow created
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175698355-843d869e-ead5-4696-ac29-38719f4826a2.png)
 
 ## Section E: Creation of New User Permissions
-1.	Create Users and ACL RBAC
+1.	Create Users and ACL Role Based Access Controls (RBAC)
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create serviceaccount newroleadded
 serviceaccount/newroleadded created
@@ -301,7 +314,11 @@ Context "newcontextadded" created.
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl config use-context newcontextadded
 Switched to context "newcontextadded".
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get all
+NAME                    READY   STATUS   RESTARTS   AGE
+mydb-659c7949cd-zl6gr   1/1     Running   0         16m16s
+wp-946c66d98-hrkxx      1/1     Running   0         10m52s
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175698794-ce09c481-2c19-4eeb-9ebe-83bb70acff4c.png)
 
 ## Section F: Application Configuration on the Pod
@@ -319,6 +336,7 @@ Switched to context "kubernetes-admin@kubernetes".
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl auth can-i get deployment --all-namespaces
 yes
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175699009-aefc2c3c-9400-45c1-9764-4f15cb20ca4b.png)
 
 ## Section G: ETCD Database Snapshot
@@ -328,12 +346,17 @@ austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo apt up
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo apt install etcd-client
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ hostname -i
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes -o wide
+NAME                 STATUS   ROLES    AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE           KERNEL-VERSION    CONTAINER-RUNTIME
+master.example.com   Ready    <none>   4h21m   v1.23.2   172.31.19.140   <none>       Ubuntu 20.04 LTS    5.11.0-1027-aws   docker://20.10.17
+node1.example.com    Ready    <none>   58m32s  v1.23.6   172.31.84.62    <none>       Ubuntu 22.04 LTS    5.15.0-1011-aws   docker://20.10.17
+node2.example.com    Ready    <none>   55m37s  v1.23.6   172.31.81.125   <none>       Ubuntu 22.04 LTS    5.15.0-1011-aws   docker://20.10.17
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ export advertise_url=172.31.19.140:2379
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ echo $advertise_url
 https://172.31.19.140:2379
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ sudo ETCDCTL_API=3 etcdctl --endpoints $advertise_url --cacert /etc/kubernetes/pki/etcd/ca.crt --key /etc/kubernetes/pki/etcd/server.key --cert /etc/kubernetes/pki/etcd/server.crt snapshot save test1.db
 Snapshot saved at test1.db
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175713494-4791a8a9-28d2-4bf4-8ecb-a4c5c7f31409.png)
 
 ## Section H: Configuration of CPU Memory Environment Scaling
@@ -358,15 +381,19 @@ austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl get
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl top pods
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl top nodes
 ```
+
 2.	Apply horizontal pod autoscaler (HPA)
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl create -f hpa.yml
 horizontalpodautoscaler.autoscaling/php-apache created
 ```
+
 ![image](https://user-images.githubusercontent.com/72522796/175719484-7adc2c51-7cb0-4530-9d7f-a90622be5eff.png)
 
-3.	Check loadbalancer in AWS console
+3.	Check and configure loadbalancer in AWS console
+
 ![image](https://user-images.githubusercontent.com/72522796/175720686-6293e44f-22d7-4fe6-af36-f98692ebf1f1.png)
+
 ![image](https://user-images.githubusercontent.com/72522796/175721126-fd1cda5e-7bb7-4d4a-a14c-88ced437eeb4.png)
 
 ## Section I: Conclusion
