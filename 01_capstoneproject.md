@@ -190,7 +190,7 @@ austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ s
 
 ![image](https://user-images.githubusercontent.com/72522796/175650542-8d327598-ec0b-4b61-b711-c73b2ce33b13.png)
 
-5.	Verify Master Node was installed
+5.	Verify installation on Master Node
 ```
 austinwoodngc@ip-172-31-19-140:~/Desktop/infrastructure_optimization_capstone$ kubectl get nodes
 NAME                 STATUS     ROLES    AGE   VERSION
@@ -360,7 +360,7 @@ Snapshot saved at test1.db
 ![image](https://user-images.githubusercontent.com/72522796/175713494-4791a8a9-28d2-4bf4-8ecb-a4c5c7f31409.png)
 
 ## Section H: Configuration of CPU Memory Environment Scaling
-1.	Ensure prerequisties for horizontal pod autoscaler (HPA) are applied
+1.	Ensure installation of prerequisites for horizontal pod autoscaler (HPA)
 ```
 austinwoodngc@master:~/Desktop/infrastructure_optimization_capstone$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 serviceaccount/metrics-server created
@@ -398,4 +398,4 @@ horizontalpodautoscaler.autoscaling/php-apache created
 
 ## Section I: Conclusion
 
-This solution would alleviate the issue Easypay is experiencing regarding timeout that occurs with the connectivity of the database. It is achieved through implementation of a cluster (EC2 instances with a load balancer and elastic IPs), implementing network policies, establishing user RBAC, and applying a horizontal pod autoscaler so if the memory of CPU goes beyond 50%, environments automatically get scaled up and configured. This allows the EasyPay application to utilize node availability, and provide scaling through the kubernetes cluster that was provisioned. The architechture can be backed up through etcd snapshots in the event that a restore needs to take place. Overall, this solution makes the EasyPay app more reliable, fast, and secure for improving the performance of the current system, ensuring that the customer's expectations are met throughout their online shopping experience. 
+This solution would alleviate the issue EasyPay is experiencing regarding timeout that occurs with the connectivity of the database. Through implementation of a cluster (EC2 instances with a load balancer and elastic IPs), implementing network policies, establishing user RBAC, and applying a horizontal pod autoscaler so if the memory of CPU goes beyond 50%, environments automatically scale and configure to achieve the objective. This allows the EasyPay application to utilize node availability and provide scaling through provisioning of the kubernetes cluster. The architecture provides the ability for backups through etcd snapshots if a restore needs to take place. Overall, this solution makes the EasyPay app more dependable, fast, and secure for improving the performance of the current system, ensuring that the customer's expectations are met throughout their online shopping experience. 
