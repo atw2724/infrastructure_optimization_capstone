@@ -1,5 +1,6 @@
-# infrastructure_optimization_capstone
+# Infrastructure Optimization Capstone
 Devops Capstone Project for Caltech
+
 **Project Description**
 Create a DevOps infrastructure for an e-commerce application to run on high-availability mode. A popular payment application, EasyPay where users add money to their wallet accounts, faces an issue in its payment success rate. The timeout that occurs with the connectivity of the database has been the reason for the issue. While troubleshooting, it is found that the database server has several downtime instances at irregular intervals. This situation compels the company to create their own infrastructure that runs in high-availability mode. Given that online shopping experiences continue to evolve as per customer expectations, the developers are driven to make their app more reliable, fast, and secure for improving the performance of the current system.
 
